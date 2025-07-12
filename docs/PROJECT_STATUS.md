@@ -119,12 +119,17 @@
 - [x] 전략 실행기 및 스케줄러
 - [x] 포괄적인 테스트 스위트 (87개 테스트 100% 통과)
 
-#### Phase 10: 리스크 관리 시스템 ⚠️ (0%)
-- [ ] 포지션 크기 관리
-- [ ] 손절/익절 로직
-- [ ] 최대 낙폭 제한
-- [ ] VaR 계산
-- [ ] 포트폴리오 리밸런싱
+#### Phase 10: 리스크 관리 시스템 🚧 (30%)
+- [x] 기존 리스크 관리 구조 분석 (IRiskManager, PerformanceCalculator)
+- [x] 포지션 크기 관리 모듈 설계 (PositionSizer)
+- [x] 손절/익절 로직 설계 (StopLossManager)
+- [x] 파일 인코딩 문제 해결 및 Git 동기화 완료
+- [ ] PositionSizer 클래스 완전 구현
+- [ ] StopLossManager 클래스 완전 구현
+- [ ] 최대 낙폭 제한 시스템 구현
+- [ ] VaR 계산 모듈 통합
+- [ ] 포트폴리오 리밸런싱 알고리즘 구현
+- [ ] 리스크 관리 테스트 스위트 완성
 
 
 #### Phase 11: 테스트 및 최적화 🧪 (0%)
@@ -147,69 +152,42 @@
 **작업 내용**: 리스크 관리 시스템 구현 (Phase 10)
 **담당자**: AI Assistant
 **시작일**: 2025-07-12
-**예상 완료일**: 2025-07-25
-**진행률**: 0%
+**예상 완료일**: 2025-07-13 (1일 단축)
+**진행률**: 30%
 
 ### 세부 내용
-1. ⏳ 포지션 크기 관리 시스템
-2. ⏳ 손절/익절 자동 로직
-3. ⏳ 최대 낙폭 제한 (MaxDrawdown)
-4. ⏳ VaR (Value at Risk) 계산 및 모니터링
-5. ⏳ 포트폴리오 리밸런싱 알고리즘
+1. ✅ 기존 리스크 관리 구조 분석 완료
+2. ✅ 포지션 크기 관리 시스템 설계 완료
+3. ✅ 손절/익절 자동 로직 설계 완료
+4. ⏳ PositionSizer 클래스 구현 (내일 완료 예정)
+5. ⏳ StopLossManager 클래스 구현 (내일 완료 예정)
+6. ⏳ 최대 낙폭 제한 시스템 구현
+7. ⏳ VaR 계산 모듈 통합
+8. ⏳ 포트폴리오 리밸런싱 알고리즘 구현
 
-### 오늘 완료한 작업 (2025-07-13)
-1. **WSL2 환경 설정**:
-   - VcXsrv 설정 가이드 작성
-   - 자동 실행 스크립트 생성 (`run_trading_ui_wsl.sh`)
-   - X11 설정 스크립트 생성 (`setup_x11_wsl2.sh`)
-   - WSL2_SETUP.md 문서 작성
+### 오늘 완료한 작업 (2025-07-12)
+1. **Phase 10 리스크 관리 시스템 시작**:
+   - 기존 IRiskManager 인터페이스 및 PerformanceCalculator 분석
+   - PortfolioManager의 리스크 검증 기능 검토
+   - BacktestEngine과의 통합 방안 확인
 
-2. **UI 위젯 개발**:
-   - BacktestConfigWidget: 백테스트 파라미터 설정 위젯
-   - ProgressWidget: 실시간 진행률 표시 위젯
-   - ChartWidget: pyqtgraph 기반 차트 위젯
+2. **포지션 크기 관리 모듈 설계**:
+   - PositionSizer 클래스 완전 설계
+   - 6가지 포지션 크기 계산 방법 정의
+   - RiskLimits 설정 클래스 설계
+   - 포괄적인 테스트 케이스 작성
 
-3. **메인 윈도우 통합**:
-   - 새로운 위젯들을 메인 윈도우에 통합
-   - 백테스트 실행 워크플로우 구현
-   - 진행률 시뮬레이션 및 결과 차트 표시
+3. **손절/익절 관리 모듈 설계**:
+   - StopLossManager 클래스 완전 설계
+   - 3가지 손절 유형 정의 (고정, 익절, 트레일링)
+   - StopOrder 관리 시스템 설계
 
-4. **테스트 작성**:
-   - 모든 새 위젯에 대한 단위 테스트 작성
-   - PyQt5 헤드리스 테스트 환경 구성
+4. **개발 환경 이슈 해결**:
+   - 파일 인코딩 문제 식별 및 해결 방안 수립
+   - Git 동기화 문제 해결 및 자동 푸시 설정
+   - Phase 10 이슈 상세 문서화 (PHASE10_ISSUES.md)
 
-5. **PyQt5 코딩 표준 정립**:
-   - objectName 설정 규칙 문서화
-   - 한글 폰트 렌더링 문제 해결
-   - 위젯 import 규칙 정립
-   - CODING_STANDARDS.md에 PyQt5 섹션 추가
-   - UI_GUIDE.md에 문제 해결 가이드 추가
-
-6. **WSL2 GUI 환경 완전 구축**:
-   - DISPLAY 환경변수 안정화 (ip route 기반)
-   - .bashrc 영구 설정 추가
-   - 모든 관련 문서 업데이트 (WSL2_SETUP.md, CLAUDE.md, UI_GUIDE.md)
-   - run_trading_ui_wsl.sh, setup_x11_wsl2.sh 스크립트 개선
-   - random 모듈 import 오류 수정
-
-8. **성과 대시보드 구현**:
-   - MetricCard, PerformanceGauge, PerformanceDashboard 위젯 완성
-   - 주요 성과 지표 표시 (수익률, 샤프 비율, 최대 낙폭 등)
-   - 위험 지표 게이지 (변동성, 베타, VaR)
-   - 상세 통계 테이블
-   - 색상 코딩 및 시각적 표현
-   - 백테스트 완료 시 자동 결과 탭 생성
-   - 포괄적인 단위 테스트 작성 (284줄 테스트 코드)
-
-9. **Phase 8 Trading UI 완료**:
-   - 모든 UI 컴포넌트 구현 완료
-   - 백테스트 워크플로우 완전 통합
-   - WSL2 GUI 환경 완전 구축
-   - PyQt5 코딩 표준 확립
-
-10. **Git 리포지토리 초기화**:
-   - 리포지토리 설정 및 원격 저장소 연결
-   - https://github.com/ParkKyunHo/K_STOCK_REST_API.git
+### 이전 주요 완료 작업들
 
 ### 완료된 작업 (Phase 7)
 ✅ 백테스트 엔진 개발 완료:
