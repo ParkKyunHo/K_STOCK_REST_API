@@ -19,6 +19,7 @@ from .widgets.strategy_list import StrategyListWidget
 from .widgets.backtest_config import BacktestConfigWidget
 from .widgets.progress_widget import ProgressWidget
 from .widgets.chart_widget import ChartWidget
+from .widgets.performance_dashboard import PerformanceDashboard
 
 
 class MainWindow(QMainWindow):
@@ -592,6 +593,13 @@ class MainWindow(QMainWindow):
         
     def _add_result_tabs(self):
         """결과 탭 추가"""
+        # 성과 대시보드 탭 (첫 번째)
+        performance_dashboard = PerformanceDashboard()
+        self.central_tabs.addTab(performance_dashboard, "성과 분석")
+        
+        # 샘플 성과 데이터로 업데이트
+        self._update_sample_performance(performance_dashboard)
+        
         # 차트 탭
         price_chart = ChartWidget("가격 차트")
         self.central_tabs.addTab(price_chart, "가격 차트")
@@ -645,3 +653,42 @@ class MainWindow(QMainWindow):
             data.append((date, equity))
             
         chart.plot_line(data, "자산 가치", "#4CAF50")
+        
+    def _update_sample_performance(self, dashboard: PerformanceDashboard):
+        """샘플 성과 데이터 업데이트"""
+        from datetime import datetime, timedelta
+        import random
+        
+        # 샘플 성과 데이터 생성
+        start_date = datetime.now() - timedelta(days=365)
+        end_date = datetime.now()
+        
+        sample_data = {
+            'start_date': start_date.strftime('%Y-%m-%d'),
+            'end_date': end_date.strftime('%Y-%m-%d'),
+            'period_days': 365,
+            'initial_capital': 10000000,
+            'final_capital': 11500000,
+            'total_return': 15.0,
+            'annual_return': 15.0,
+            'sharpe_ratio': 1.85,
+            'max_drawdown': -8.5,
+            'win_rate': 65.2,
+            'profit_factor': 1.42,
+            'volatility': 0.18,  # 18%
+            'beta': 0.95,
+            'var_95': -0.035,  # -3.5%
+            'var_99': -0.055,  # -5.5%
+            'cvar_95': -0.045,  # -4.5%
+            'total_trades': 156,
+            'winning_trades': 102,
+            'losing_trades': 54,
+            'avg_return': 0.65,
+            'max_win': 8.2,
+            'max_loss': -4.1,
+            'sortino_ratio': 2.1,
+            'calmar_ratio': 1.76
+        }
+        
+        # 성과 대시보드 업데이트
+        dashboard.update_performance_data(sample_data)
