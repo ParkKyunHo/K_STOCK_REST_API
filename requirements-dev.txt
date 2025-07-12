@@ -1,0 +1,14 @@
+# Development dependencies only
+# PyQt5==5.15.10  # Commented out - install separately if needed
+pyqtgraph==0.13.3
+matplotlib==3.8.2
+plotly==5.18.0
+
+# Documentation
+sphinx==7.2.6
+sphinx-rtd-theme==2.0.0
+
+# Performance and Profiling
+memory-profiler==0.61.0
+line-profiler==4.1.2
+py-spy==0.3.14

@@ -1,0 +1,122 @@
+# 키움증권 REST API 백테스팅 시스템 설정
+
+app:
+  name: "Kiwoom Backtest System"
+  version: "0.1.0"
+  environment: ${ENVIRONMENT:development}
+
+api:
+  base_url: ${KIWOOM_API_URL:https://api.kiwoom.com}
+  mock_url: ${KIWOOM_MOCK_API_URL:https://mockapi.kiwoom.com}
+  use_mock: ${USE_MOCK_API:false}
+  timeout: ${API_TIMEOUT:30}
+  rate_limit:
+    calls_per_second: ${API_RATE_LIMIT:10}
+    burst_size: 20
+  retry:
+    max_attempts: 3
+    backoff_factor: 2.0
+    retry_codes: [429, 500, 502, 503, 504]
+
+cache:
+  backend: "redis"  # redis, memory, file
+  redis:
+    url: ${REDIS_URL:redis://localhost:6379/0}
+    max_connections: 50
+  memory:
+    max_size_mb: 512
+  file:
+    directory: ${CACHE_DIR:data/cache/}
+  ttl:
+    default: ${CACHE_TTL:300}
+    market_data: 60
+    daily_data: 3600
+    company_info: 86400
+
+database:
+  url: ${DATABASE_URL:postgresql://localhost:5432/kiwoom_backtest}
+  pool_size: 20
+  max_overflow: 40
+  pool_timeout: 30
+  echo: false
+
+logging:
+  level: ${LOG_LEVEL:INFO}
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  handlers:
+    console:
+      enabled: true
+      level: ${LOG_LEVEL:INFO}
+    file:
+      enabled: true
+      path: ${LOG_FILE:logs/kiwoom_backtest.log}
+      max_size_mb: 100
+      backup_count: 10
+      level: ${LOG_LEVEL:INFO}
+    structured:
+      enabled: false
+      format: "json"
+
+backtest:
+  default_capital: 10000000
+  commission:
+    rate: ${DEFAULT_COMMISSION_RATE:0.00015}
+    minimum: 0
+  slippage:
+    rate: ${DEFAULT_SLIPPAGE_RATE:0.0001}
+    model: "linear"  # linear, square_root, market_impact
+  risk:
+    max_position_size: ${MAX_POSITION_SIZE:0.95}
+    max_sector_exposure: 0.3
+    max_drawdown_limit: 0.2
+  execution:
+    fill_ratio: 1.0
+    delay_ms: 0
+
+data:
+  directory: ${DATA_DIR:data/}
+  raw_data_dir: ${DATA_DIR:data/}raw/
+  processed_data_dir: ${DATA_DIR:data/}processed/
+  download:
+    chunk_size: 1000
+    concurrent_downloads: 5
+  validation:
+    check_missing: true
+    check_outliers: true
+    outlier_threshold: 5.0
+
+ui:
+  theme: "dark"  # light, dark
+  chart:
+    backend: "pyqtgraph"  # pyqtgraph, matplotlib
+    default_indicators: ["SMA_20", "SMA_50", "Volume"]
+  refresh_rate_ms: 1000
+
+plugins:
+  strategies:
+    directory: "plugins/strategies"
+    auto_reload: true
+  indicators:
+    directory: "plugins/indicators"
+    auto_reload: true
+  data_providers:
+    directory: "plugins/data_providers"
+    auto_reload: false
+
+performance:
+  profiling:
+    enabled: false
+    output_dir: "logs/profiling/"
+  optimization:
+    use_numba: false
+    use_cython: false
+    parallel_processing: true
+    max_workers: ${MAX_WORKERS:4}
+
+security:
+  encryption:
+    algorithm: "AES-256"
+    key: ${ENCRYPTION_KEY:}
+  api_keys:
+    encrypt_at_rest: true
+    rotate_days: 90
